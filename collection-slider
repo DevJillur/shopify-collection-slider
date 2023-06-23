@@ -1,0 +1,132 @@
+{% assign collection = collections[section.settings.collection] %}
+{% assign prod_limit = section.settings.limit %}
+
+<section class="collection-slider-section" id="{{ section.id }}">
+  <div class="collection-slider">
+    <div class="collection-slider-wrapper">
+
+      {% if section.settings.title != blank or section.settings.subtitle != blank %}
+      <div class="collection-slider-header">
+        {% if section.settings.title != blank %}
+        <h2 class="title">{{ section.settings.title }}</h2>
+        {% endif %}
+        {% if section.settings.subtitle != blank %}
+        <h5 class="subtitle">{{ section.settings.subtitle }}</h2>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <div class="swiper">
+        <div class="swiper-wrapper">
+
+          {% for product in collection.products limit: prod_limit %}
+          <div class="swiper-slide">
+
+            {% render 'product-listing', product: product, collection: collection %}
+            
+          </div>
+          {% endfor %}
+          
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<script>
+  var swiper = new Swiper(".swiper", {
+    slidesPerView: 2,
+    spaceBetween: 5,
+    loop: true,
+    autoplay: {
+      delay: 2500,
+      disableOnInteraction: false,
+    },
+    speed: 2500,
+    breakpoints: {
+      768: {
+        slidesPerView: 4,
+        spaceBetween: 10,
+      },
+    },
+  });
+</script>
+
+<style>
+  .collection-slider-section {
+    width: 100%;
+    overflow: hidden;
+    display: block;
+    margin: 10px auto;
+}
+  .collection-slider-wrapper {
+    padding: 0 15px;
+}
+  .collection-slider-header {
+    text-align: center;
+}
+  .collection-slider-header .title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+    margin-bottom: 5px;
+    display: block;
+}
+  .collection-slider-section .price {
+    display: none !important;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Collection Slider",
+  "settings":
+  [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Sub Title"
+    },
+    {
+      "id": "collection",
+      "type": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 2,
+      "max": 30,
+      "step": 1,
+      "label": "Products shown",
+      "default": 8
+    }
+  ],
+  "presets":
+  [
+    {
+      "name": "Collection Slider"
+    }
+  ],
+  "templates":
+  [
+    "404",
+    "article",
+    "blog",
+    "cart",
+    "collection",
+    "list-collections",
+    "index",
+    "page",
+    "product",
+    "search",
+    "customers/account"
+  ]
+}
+{% endschema %}
